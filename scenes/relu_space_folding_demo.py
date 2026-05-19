@@ -86,7 +86,7 @@ class ReLUAsSpaceFolding(Scene):
         )
         VGroup(legend_original, legend_folded).arrange(DOWN, aligned_edge=LEFT, buff=0.16).to_corner(RIGHT + DOWN)
 
-        final = Text("coordinate-wise: fold left/bottom half-planes to zero").scale(0.34).to_edge(DOWN)
+        final = Text("MLP = repeated reshape + fold").scale(0.38).to_edge(DOWN)
 
         self.play(Write(title), Write(formula), FadeIn(message))
         self.play(Create(plane), Create(x_axis_arrow), Create(y_axis_arrow), FadeIn(original_dots), FadeIn(legend_original))
