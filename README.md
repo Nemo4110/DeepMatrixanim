@@ -31,6 +31,7 @@ $env:UV_CACHE_DIR = Join-Path (Get-Location) ".uv-cache"
 uv run manim -ql scenes/mlp_forward_demo.py MLPForwardDemo
 uv run manim -ql scenes/linear_layer_space_demo.py LinearLayerAsSpaceTransform
 uv run manim -ql scenes/relu_space_folding_demo.py ReLUAsSpaceFolding
+uv run manim -ql scenes/representation_space_demo.py RepresentationSpaceDecisionBoundary
 ```
 
 Manim writes rendered videos under `media/videos/`.
