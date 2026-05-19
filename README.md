@@ -24,11 +24,13 @@ uv run pytest -v
 uv run manim --version
 ```
 
-## Render The First Demo
+## Render The Demos
 
 ```powershell
 $env:UV_CACHE_DIR = Join-Path (Get-Location) ".uv-cache"
 uv run manim -ql scenes/mlp_forward_demo.py MLPForwardDemo
+uv run manim -ql scenes/linear_layer_space_demo.py LinearLayerAsSpaceTransform
+uv run manim -ql scenes/relu_space_folding_demo.py ReLUAsSpaceFolding
 ```
 
 Manim writes rendered videos under `media/videos/`.
