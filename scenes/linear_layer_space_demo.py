@@ -15,6 +15,7 @@ from manim import (
     Create,
     Dot,
     FadeIn,
+    MathTex,
     NumberPlane,
     Scene,
     Text,
@@ -32,16 +33,16 @@ from deepmatrixanim.linear_maps import (
 )
 
 
-def point_to_scene(point: np.ndarray) -> np.ndarray:
-    return np.array([point[0], point[1], 0.0])
+def point_to_scene(plane: NumberPlane, point: np.ndarray) -> np.ndarray:
+    return plane.c2p(float(point[0]), float(point[1]))
 
 
-def vector_arrow(point: np.ndarray, color=BLUE) -> Arrow:
-    return Arrow(start=np.zeros(3), end=point_to_scene(point), buff=0, color=color)
+def vector_arrow(plane: NumberPlane, point: np.ndarray, color=BLUE) -> Arrow:
+    return Arrow(start=plane.c2p(0, 0), end=point_to_scene(plane, point), buff=0, color=color)
 
 
-def dots_for(points: np.ndarray, color=YELLOW) -> VGroup:
-    return VGroup(*[Dot(point_to_scene(point), radius=0.055, color=color) for point in points])
+def dots_for(plane: NumberPlane, points: np.ndarray, color=YELLOW) -> VGroup:
+    return VGroup(*[Dot(point_to_scene(plane, point), radius=0.055, color=color) for point in points])
 
 
 class LinearLayerAsSpaceTransform(Scene):
@@ -57,7 +58,7 @@ class LinearLayerAsSpaceTransform(Scene):
         affine_points = affine_transform(points, matrix, bias)
 
         title = Text("Linear layer as a space transform").scale(0.52).to_edge(UP)
-        formula = Text("z = W x + b").scale(0.55).next_to(title, DOWN, buff=0.16)
+        formula = MathTex(r"z = Wx + b").scale(0.55).next_to(title, DOWN, buff=0.16)
         note = Text("reshape directions, then shift origin").scale(0.32).next_to(formula, DOWN, buff=0.12)
 
         plane = NumberPlane(
@@ -72,23 +73,22 @@ class LinearLayerAsSpaceTransform(Scene):
             },
         ).shift(DOWN * 0.45)
 
-        plane_center = plane.get_center()
-        original_vector = vector_arrow(x, BLUE).shift(plane_center)
-        linear_vector = vector_arrow(wx, GREEN).shift(plane_center)
+        original_vector = vector_arrow(plane, x, BLUE)
+        linear_vector = vector_arrow(plane, wx, GREEN)
         affine_vector = Arrow(
-            start=point_to_scene(bias) + plane_center,
-            end=point_to_scene(z) + plane_center,
+            start=point_to_scene(plane, bias),
+            end=point_to_scene(plane, z),
             buff=0,
             color=PURPLE,
         )
-        bias_arrow = vector_arrow(bias, ORANGE).shift(plane_center)
+        bias_arrow = vector_arrow(plane, bias, ORANGE)
 
-        original_dots = dots_for(points, YELLOW).shift(plane_center)
-        linear_dots = dots_for(linear_points, GREEN).shift(plane_center)
-        affine_dots = dots_for(affine_points, PURPLE).shift(plane_center)
+        original_dots = dots_for(plane, points, YELLOW)
+        linear_dots = dots_for(plane, linear_points, GREEN)
+        affine_dots = dots_for(plane, affine_points, PURPLE)
 
-        w_label = Text("W = [[1.2, 0.6], [-0.4, 1.1]]").scale(0.32)
-        b_label = Text("b = [0.8, -0.35]").scale(0.32)
+        w_label = MathTex(r"W = \begin{bmatrix}1.2 & 0.6 \\ -0.4 & 1.1\end{bmatrix}").scale(0.32)
+        b_label = MathTex(r"b = \begin{bmatrix}0.8 \\ -0.35\end{bmatrix}").scale(0.32)
         VGroup(w_label, b_label).arrange(RIGHT, buff=0.55).to_edge(DOWN)
 
         self.play(Write(title), Write(formula), FadeIn(note))
