@@ -32,6 +32,7 @@ uv run manim -ql scenes/mlp_forward_demo.py MLPForwardDemo
 uv run manim -ql scenes/linear_layer_space_demo.py LinearLayerAsSpaceTransform
 uv run manim -ql scenes/relu_space_folding_demo.py ReLUAsSpaceFolding
 uv run manim -ql scenes/representation_space_demo.py RepresentationSpaceDecisionBoundary
+uv run manim -ql scenes/iris_mlp_training_demo.py IrisMLPBeforeAfterTraining
 ```
 
 Manim writes rendered videos under `media/videos/`.
